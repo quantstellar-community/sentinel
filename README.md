@@ -248,3 +248,5 @@ The long-term ambition is to make Sentinel a general behavioral intelligence lay
 > **Observe the system, learn its normal state, understand its evolution, detect meaningful deviations, and explain why they matter.**
 
 Sentinel is the foundation for testing that idea in a concrete and measurable financial setting.
+
+# sentinel
