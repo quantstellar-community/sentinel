@@ -1,2 +1,16 @@
-/docs
+# Data — large, immutable, redistributed under DbCL-1.0
 /datasets
+
+# Trained artifacts
+/models
+/experiments/results
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+.env
+

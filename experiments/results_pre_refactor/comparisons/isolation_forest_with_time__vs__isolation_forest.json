@@ -1,0 +1,63 @@
+{
+  "baseline": "isolation_forest_with_time",
+  "challenger": "isolation_forest",
+  "n_bootstrap": 2000,
+  "mean_delta": 0.015961864307409982,
+  "n_folds": 4,
+  "n_significant_wins": 3,
+  "n_significant_losses": 1,
+  "folds": [
+    {
+      "fold": 0,
+      "label_a": "isolation_forest_with_time",
+      "label_b": "isolation_forest",
+      "auprc_a": 0.03657226800999455,
+      "auprc_b": 0.05046553809080137,
+      "delta": 0.013893270080806819,
+      "delta_ci_low": 0.008662534950916737,
+      "delta_ci_high": 0.022975358528991473,
+      "prob_b_better": 1.0,
+      "n_bootstrap": 2000,
+      "significant": true
+    },
+    {
+      "fold": 1,
+      "label_a": "isolation_forest_with_time",
+      "label_b": "isolation_forest",
+      "auprc_a": 0.026957645708428225,
+      "auprc_b": 0.03144151291389384,
+      "delta": 0.004483867205465616,
+      "delta_ci_low": 0.00036655486124031615,
+      "delta_ci_high": 0.02366565519427771,
+      "prob_b_better": 0.9875,
+      "n_bootstrap": 2000,
+      "significant": true
+    },
+    {
+      "fold": 2,
+      "label_a": "isolation_forest_with_time",
+      "label_b": "isolation_forest",
+      "auprc_a": 0.19293798601071313,
+      "auprc_b": 0.24104876456023455,
+      "delta": 0.04811077854952142,
+      "delta_ci_low": 0.025792221280638804,
+      "delta_ci_high": 0.08291047078569846,
+      "prob_b_better": 1.0,
+      "n_bootstrap": 2000,
+      "significant": true
+    },
+    {
+      "fold": 3,
+      "label_a": "isolation_forest_with_time",
+      "label_b": "isolation_forest",
+      "auprc_a": 0.027983740494738417,
+      "auprc_b": 0.02534328188858449,
+      "delta": -0.0026404586061539274,
+      "delta_ci_low": -0.00534973082403132,
+      "delta_ci_high": -0.0007473867203288512,
+      "prob_b_better": 0.001,
+      "n_bootstrap": 2000,
+      "significant": true
+    }
+  ]
+}

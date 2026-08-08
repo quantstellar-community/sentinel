@@ -1,4 +1,4 @@
-# Sentinel
+ # Sentinel
 
 ### Behavioral Anomaly Intelligence for Dynamic Systems
 
