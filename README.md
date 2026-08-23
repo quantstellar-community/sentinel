@@ -1,250 +1,425 @@
 # Sentinel
 
-### Behavioral Anomaly Intelligence for Dynamic Systems
+### Behavioral Fraud Intelligence
 
-**Sentinel** is a behavioral anomaly intelligence platform designed to learn how complex systems normally behave, identify meaningful deviations, and produce explainable risk signals.
+Sentinel là nền tảng **Behavioral Fraud Intelligence** tập trung vào việc học hành vi bình thường của hệ thống, phát hiện các sai lệch có ý nghĩa và chuyển chúng thành các tín hiệu bất thường/risk có thể giải thích.
 
-The first application domain is online payment fraud detection. The long-term objective is to develop a reusable intelligence layer that can be applied to other dynamic systems, including cybersecurity, anti-money laundering, data-center monitoring, aerospace telemetry, smart-grid operations, and quantum-system monitoring.
+Ứng dụng đầu tiên của Sentinel là **phát hiện gian lận trong thanh toán trực tuyến**. Về dài hạn, kiến trúc được định hướng có thể mở rộng sang AML, cybersecurity, data-center monitoring, aerospace telemetry và các hệ thống động khác.
 
-> **Project status:** Early research and pre-implementation foundation.
+> **Trạng thái:** Early research & pre-implementation foundation.
 
-The repository currently establishes the problem framing, research direction, evaluation principles, and initial dataset context. Production pipelines, public APIs, deployed quantum circuits, and operational decision systems are not yet implemented.
+Sentinel hiện tập trung vào problem framing, research direction, evaluation methodology và architectural foundation. Production pipeline, public API, deployed quantum circuits và operational decision system chưa được xem là hoàn thiện.
 
-## Vision
+---
 
-Most fraud-detection systems frame the problem as a direct classification task:
+## 1. Problem
 
-```text
-Transaction -> Fraud or Non-Fraud
-```
-
-Sentinel takes a broader approach:
+Cách tiếp cận truyền thống thường mô hình hóa fraud detection như:
 
 ```text
-System Events
-    -> Behavioral Context
-    -> State Representation
-    -> Expected Behavior
-    -> Observed vs. Expected Deviation
-    -> Anomaly and Risk Intelligence
+Transaction → Fraud / Non-Fraud
 ```
 
-The central principle is:
+Sentinel tiếp cận bài toán theo hướng behavioral intelligence:
 
-> **Learn the normal world first; detect deviations from it second.**
-
-This distinction matters because anomalous behavior is not always fraud, while new fraud patterns may not resemble previously labeled fraud examples. Sentinel therefore separates anomaly detection from the final risk or fraud decision.
-
-## Initial Use Case: Online Payment Fraud
-
-The initial vertical is card-not-present and digital-payment fraud. This domain provides a demanding and measurable environment for validating the platform because it combines:
-
-- severe class imbalance;
-- evolving fraud strategies;
-- temporal behavior changes;
-- relationships among customers, merchants, devices, locations, and transactions;
-- a high cost of false positives and false negatives;
-- strict latency and explainability requirements.
-
-The first version is intended to support research and controlled evaluation rather than direct production authorization of live payments.
-
-### Initial objectives
-
-1. Build a reliable classical behavioral and anomaly-detection baseline.
-2. Measure whether quantum-enhanced representations provide value under realistic constraints.
-3. Detect deviations from normal transaction behavior, not only previously observed fraud labels.
-4. Produce fraud-risk signals that can be inspected and explained.
-5. Establish a reusable architecture that can later support additional domains.
-
-## Conceptual Architecture
-
-```mermaid
-flowchart LR
-    A[Transaction or Event Stream] --> B[Feature and Context Layer]
-    B --> C[Behavioral State Engine]
-    C --> D[Expected State or Normal Manifold]
-    B --> E[Observed State]
-    D --> F[Deviation Analysis]
-    E --> F
-    F --> G[Anomaly Score]
-    G --> H[Risk and Fraud Decision]
-    F --> I[Explanation Layer]
-    C -. offline research .-> J[Quantum Representation Layer]
-    J -. similarity or fidelity .-> F
+```text
+Transaction History
+        ↓
+Behavioral Context
+        ↓
+Behavioral Representation
+        ↓
+Expected / Normal Behavior
+        ↓
+Deviation
+        ↓
+Anomaly
+        ↓
+Risk
+        ↓
+Decision Support
 ```
 
-### Core layers
+Nguyên tắc cốt lõi:
 
-| Layer | Responsibility | Example outputs |
-|---|---|---|
-| Event and data layer | Ingest and validate transactions or system events | Clean event records |
-| Context layer | Construct temporal, entity, graph, and behavioral features | Velocity, device history, merchant context |
-| Behavioral State Engine | Represent normal behavior and its evolution | Current state, expected next state, behavior trajectory |
-| Deviation layer | Compare observed behavior with expected or normal behavior | Residual, drift, distance, similarity |
-| Anomaly layer | Convert deviations into interpretable anomaly signals | Anomaly score, contributing factors |
-| Decision layer | Combine anomaly signals with supervised risk evidence | Fraud probability, risk tier, decision |
-| Explanation layer | Make the signal auditable | Reasons, feature attribution, state comparison |
-| Quantum research layer | Explore quantum representations and similarity measures | Quantum kernel, fidelity, latent representation |
+> **Learn normal behavior first; detect meaningful deviations second.**
 
-## The Role of Quantum Computing
+Anomaly không mặc định đồng nghĩa với fraud. Sentinel vì vậy tách biệt **anomaly detection**, **risk assessment** và **final decision**.
 
-Quantum computing is treated as an enhancement layer, not as a requirement for every stage of the system.
+---
 
-Potential research directions include:
+## 2. Initial Use Case
 
-- quantum feature maps and quantum kernels;
-- fidelity-based similarity between behavioral representations;
-- quantum autoencoders for learning a normal manifold;
-- hybrid classical-quantum anomaly scoring;
-- noisy-simulation and hardware-aware evaluation.
+Sentinel V1 tập trung vào **card-not-present và digital-payment fraud**.
 
-The intended near-term architecture keeps latency-sensitive decisions classical. Quantum circuits are primarily evaluated offline or in batch workflows until their practical cost, reliability, and value are demonstrated.
+Đây là môi trường phù hợp để nghiên cứu behavioral intelligence vì có:
 
-The project does not assume quantum advantage. Any claim of improvement must be supported by controlled comparison against strong classical baselines, including equal feature budgets, leakage-safe splits, appropriate imbalance handling, and reproducible evaluation.
+- Class imbalance nghiêm trọng.
+- Fraud pattern thay đổi theo thời gian.
+- Temporal behavior.
+- Quan hệ giữa transaction và các entity liên quan.
+- Chi phí đáng kể của false positive và false negative.
+- Yêu cầu về explainability và latency.
 
-The acronym **QAE** may refer to two different concepts in related research:
+V1 hướng tới **research và controlled evaluation**, không phải hệ thống tự động authorize/decline giao dịch thực tế.
 
-- **Quantum Autoencoder**, a model for quantum compression and fidelity-based anomaly detection;
-- **Quantum Anomaly Engine**, the broader platform-level anomaly component.
+### Initial Objectives
 
-Sentinel uses the full term whenever this distinction is important.
+1. Xây dựng Classical behavioral/anomaly baseline đáng tin cậy.
+2. Đánh giá Quantum-enhanced methods dưới điều kiện benchmark công bằng.
+3. Phát hiện deviation khỏi behavioral pattern bình thường.
+4. Tạo anomaly/risk signals có thể kiểm tra và giải thích.
+5. Xây dựng architecture có thể tái sử dụng cho các domain khác.
 
-## Current Dataset Context
+---
 
-The repository currently includes an anonymized European credit-card fraud dataset with:
+## 3. Architecture
 
-- 284,807 transactions;
-- 492 fraud cases;
-- an approximate fraud rate of 0.1727%;
-- 28 anonymized PCA features;
-- transaction time and amount fields;
-- a binary class label.
+Sentinel được tổ chức theo các lớp chính:
 
-This dataset is suitable for an initial benchmark of:
+```text
+Event / Transaction Data
+        ↓
+Data & Context Layer
+        ↓
+Behavioral Representation
+        ↓
+Normal / Expected Behavior
+        ↓
+Deviation Analysis
+        ↓
+Anomaly Intelligence
+        ↓
+Risk / Decision Support
+```
 
-- classical anomaly detection;
-- one-class learning;
-- quantum-kernel experiments;
-- quantum-autoencoder research;
-- imbalanced classification metrics.
+Quantum được đặt như một **research enhancement layer**:
 
-It does not contain rich customer, merchant, device, or identity histories. Consequently, it is not sufficient by itself to validate the full behavioral-trajectory vision of Sentinel. Future research may require datasets with richer entity relationships and temporal context.
+```text
+Behavioral Representation
+        ↓
+Classical Baseline
+        ↓
+Quantum Representation / Similarity
+        ↓
+Fair Benchmark
+        ↓
+Validated Intelligence
+```
 
-## Evaluation Principles
+Chi tiết kiến trúc được trình bày trong [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
-Because fraud is highly imbalanced, accuracy must not be treated as the primary success criterion.
+---
 
-The initial evaluation should prioritize:
+## 4. Classical-First, Quantum Where Justified
 
-- **AUPRC** as the primary ranking metric;
-- ROC-AUC as a secondary metric;
-- precision and recall at operating thresholds;
-- F1 score and confusion matrices;
-- false-positive rate and false-decline implications;
-- calibration of predicted risk;
-- robustness to class prevalence and temporal drift;
-- inference latency and resource requirements;
-- explainability of individual anomaly decisions.
+Sentinel không giả định Quantum tốt hơn Classical.
 
-Every quantum experiment should be compared with a clearly defined classical counterpart. Evaluation must also document:
+Mọi Quantum approach phải được đánh giá cùng với:
 
-- train, validation, and test methodology;
-- temporal leakage prevention;
-- preprocessing and feature-selection decisions;
-- class-imbalance handling;
-- random seeds and simulator settings;
-- qubit count, circuit depth, parameter count, and noise model;
-- whether the quantum component is simulated, hardware-executed, or hybrid.
+- Scientific motivation.
+- Classical baseline.
+- Encoding / state preparation.
+- Circuit cost.
+- Qubit count và circuit depth.
+- Shots và noise.
+- Hardware feasibility.
+- Scalability.
+- End-to-end computational cost.
+- Practical utility.
 
-## Roadmap
+Hướng nghiên cứu Quantum V1 ưu tiên **Quantum Kernel + OCSVM** và các phương pháp behavioral representation/similarity phù hợp.
+
+Nguyên tắc:
+
+```text
+Problem
+→ Hypothesis
+→ Classical Baseline
+→ Quantum Method
+→ Fair Benchmark
+→ Resource Analysis
+→ Scientific Conclusion
+→ Product Evaluation
+```
+
+Không claim **quantum advantage** chỉ dựa trên theoretical speedup hoặc một metric tốt hơn.
+
+---
+
+## 5. Evaluation
+
+Do fraud detection thường có class imbalance rất lớn, accuracy không được sử dụng như tiêu chí chính duy nhất.
+
+Evaluation có thể bao gồm:
+
+- AUPRC / PR-AUC.
+- ROC-AUC.
+- Precision / Recall.
+- F1.
+- False-positive / false-negative analysis.
+- Calibration.
+- Robustness.
+- Temporal generalization.
+- Inference latency.
+- Resource requirements.
+- Explainability.
+
+Mọi Quantum experiment phải có Classical counterpart phù hợp và ghi nhận execution context:
+
+```text
+Dataset / Split
+Feature Representation
+Model Configuration
+Random Seed
+Qubits
+Circuit Depth
+Shots
+Noise / Backend
+Runtime
+```
+
+Chi tiết evaluation rules được quản lý trong [`RULES.md`](RULES.md).
+
+---
+
+## 6. Research Direction
+
+Roadmap hiện tại:
+
+```text
+Phase 0 — Research Contract
+        ↓
+Phase 1 — Classical Behavioral Baseline
+        ↓
+Phase 2 — Hybrid / Quantum Anomaly Layer
+        ↓
+Phase 3 — Behavioral State Intelligence
+        ↓
+Phase 4 — Sentinel Platform
+```
 
 ### Phase 0 — Research Contract
 
-- Define the canonical data schema.
-- Define anomaly, risk, and fraud labels separately.
-- Establish leakage-safe temporal splits.
-- Document the baseline and evaluation protocol.
+- Canonical data schema.
+- Problem formulation.
+- Leakage-safe evaluation protocol.
+- Classical baseline definition.
 
 ### Phase 1 — Classical Behavioral Baseline
 
-- Implement a reproducible data pipeline.
-- Build temporal and behavioral features.
-- Establish classical supervised and unsupervised baselines.
-- Add anomaly scores and basic explanations.
+- Reproducible data pipeline.
+- Behavioral features.
+- Classical anomaly detection.
+- Evaluation và error analysis.
 
-### Phase 2 — Hybrid Anomaly Layer
+### Phase 2 — Hybrid / Quantum Anomaly Layer
 
-- Evaluate quantum kernels and one-class methods.
-- Evaluate quantum-autoencoder and fidelity-based approaches.
-- Compare quantum representations with classical dimensionality reduction.
-- Measure performance under noise and constrained feature budgets.
+- Quantum kernels.
+- Quantum OCSVM.
+- Quantum representation/similarity.
+- Noise-aware experiments.
+- Fair Classical-vs-Quantum benchmarking.
 
 ### Phase 3 — Behavioral State Intelligence
 
-- Model customer, merchant, device, and transaction state evolution.
-- Compare expected and observed behavioral trajectories.
-- Combine temporal drift with geometric or fidelity-based anomaly signals.
-- Expose a stable anomaly-intelligence contract.
+- Temporal behavioral state.
+- Entity context.
+- Behavioral trajectory.
+- Expected-vs-observed deviation.
 
 ### Phase 4 — Sentinel Platform
 
-- Package the anomaly layer as a reusable service or SDK.
-- Add domain adapters for new event streams.
-- Support investigation workflows and auditability.
-- Evaluate transfer to cybersecurity, AML, infrastructure, and aerospace telemetry.
+- Reusable behavioral intelligence service.
+- Investigation interface.
+- Domain adapters.
+- Expansion beyond financial fraud.
 
-## Non-Goals
+---
 
-Sentinel is not currently intended to:
+## 7. Dataset Context
 
-- replace an entire bank fraud platform;
-- authorize or decline live payments without independent validation;
-- claim quantum advantage without reproducible evidence;
-- put a noisy QPU directly in a latency-critical payment path;
-- solve the full AML problem in the first release;
-- support every target domain before the initial fraud workflow is proven.
+Research foundation hiện có thể sử dụng anonymized European credit-card fraud dataset với:
 
-## Repository Structure
+- 284,807 transactions.
+- 492 fraud cases.
+- Fraud rate khoảng 0.1727%.
+- 28 anonymized PCA features.
+- Transaction time và amount.
+- Binary fraud label.
 
-The intended minimal project surface, after temporary research-context materials are removed, is:
+Dataset phù hợp cho initial benchmark về:
+
+- Classical anomaly detection.
+- One-Class learning.
+- Quantum-kernel experiments.
+- Imbalanced classification.
+
+Tuy nhiên, dataset không có rich customer, merchant, device hoặc identity histories. Vì vậy nó **không đủ để xác thực toàn bộ behavioral-trajectory vision** của Sentinel.
+
+Các kết luận về behavioral intelligence ở quy mô entity/temporal cần dataset giàu context hơn.
+
+---
+
+## 8. Technology
+
+Technology stack V1 được định hướng:
 
 ```text
-sentinel/
-├── README.md
-└── datasets/
-    └── creditcard.csv
+Python 3.12.x
+uv
+FastAPI
+Pydantic
+Taipy
+Plotly
+NumPy
+pandas
+SciPy
+scikit-learn
+Qiskit
+pytest
+Jupyter
 ```
 
-As implementation begins, the structure is expected to evolve toward explicit separation between data processing, behavioral modeling, anomaly detection, quantum experiments, evaluation, and deployment interfaces.
+Vai trò chính:
 
-## Design Principles
+- **FastAPI + Pydantic** → API boundary.
+- **Taipy + Plotly** → investigation UI và visualization.
+- **scikit-learn** → Classical ML/anomaly baseline.
+- **Qiskit** → Quantum research layer.
+- **NumPy / pandas / SciPy** → data/scientific computing.
+- **pytest** → testing.
+- **uv** → environment và dependency management.
 
-1. **Normality before classification** — model the system’s normal behavior before making a fraud decision.
-2. **Anomaly is not fraud** — preserve the distinction between detection, investigation, and final decision.
-3. **Classical-first engineering** — establish a strong, useful baseline before adding quantum components.
-4. **Quantum where it is meaningful** — use quantum methods for representation, similarity, and geometry when experiments justify them.
-5. **Explainability by design** — every operational signal should have inspectable evidence.
-6. **Leakage-safe evaluation** — temporal and entity relationships must not contaminate held-out results.
-7. **Reusable abstractions** — separate the domain adapter from the behavioral intelligence engine.
-8. **Evidence over hype** — performance, cost, noise, and limitations must be reported together.
+Chi tiết xem [`TECH_STACK.md`](TECH_STACK.md).
 
-## Responsible Use
+---
 
-Fraud and anomaly scores can affect legitimate users, businesses, and access to financial services. Sentinel research must therefore account for:
+## 9. Repository Documentation
 
-- false positives and customer friction;
-- threshold selection and human review;
-- data privacy and access control;
-- dataset bias and representativeness;
-- model drift and adversarial adaptation;
-- auditability of automated decisions.
+Các tài liệu chính:
 
-The system should be treated as decision support until its reliability, governance, and deployment safety have been independently validated.
+| Document | Mục đích |
+|---|---|
+| `PRD.md` | Product requirements |
+| `DESIGN.md` | Product/UI design |
+| `ARCHITECTURE.md` | System architecture |
+| `SCHEMA.md` | Data và interface schemas |
+| `RULES.md` | Project rules |
+| `TECH_STACK.md` | Technology stack |
+| `TEAM.md` | Team structure |
+| `ROLES.md` | Role responsibilities |
+| `WORKFLOW.md` | Research & development workflow |
+| `CONTRIBUTING.md` | Contribution guidelines |
 
-## Long-Term Direction
+---
 
-The long-term ambition is to make Sentinel a general behavioral intelligence layer for complex systems:
+## 10. Design Principles
 
-> **Observe the system, learn its normal state, understand its evolution, detect meaningful deviations, and explain why they matter.**
+### Classical First
 
-Sentinel is the foundation for testing that idea in a concrete and measurable financial setting.
+Classical baseline phải được xây dựng và đánh giá trước khi kết luận Quantum có giá trị.
+
+### Behavioral Intelligence
+
+Tập trung vào behavior, context và deviation thay vì chỉ classification.
+
+### Anomaly ≠ Fraud
+
+Anomaly là tín hiệu cần được đánh giá; không phải mọi anomaly đều là fraud.
+
+### Fair Benchmark
+
+Quantum và Classical phải được so sánh dưới evaluation protocol hợp lý và reproducible.
+
+### Evidence Over Hype
+
+Kết quả phải đi cùng limitations, cost, noise và practical utility.
+
+### Explainability
+
+Kết quả cần có evidence đủ để hỗ trợ investigation và decision-making.
+
+### No Over-engineering
+
+Infrastructure và abstraction chỉ được thêm khi workload hoặc product requirement thực sự cần.
+
+---
+
+## 11. Responsible Use
+
+Fraud intelligence có thể ảnh hưởng trực tiếp đến legitimate users và financial decisions.
+
+Sentinel research vì vậy phải quan tâm đến:
+
+- False positives và customer friction.
+- False negatives.
+- Threshold selection.
+- Human review.
+- Data privacy.
+- Dataset bias.
+- Model drift.
+- Adversarial adaptation.
+- Auditability.
+
+Cho đến khi reliability và governance được xác thực đầy đủ, Sentinel nên được xem là **decision-support system**, không phải autonomous financial decision maker.
+
+---
+
+## 12. Current Status
+
+Sentinel hiện ở giai đoạn:
+
+```text
+Research Foundation
+        ↓
+Architecture / Documentation
+        ↓
+Environment Setup
+        ↓
+Core Implementation
+        ↓
+Classical Baseline
+        ↓
+Quantum Research
+        ↓
+Application Integration
+```
+
+Một capability chỉ được xem là validated khi có đủ evidence phù hợp về:
+
+```text
+Scientific Validity
++
+Engineering Feasibility
++
+Reproducibility
++
+Practical Utility
+```
+
+---
+
+## 13. Vision
+
+Sentinel hướng tới một behavioral intelligence layer có khả năng:
+
+```text
+Observe
+  ↓
+Understand Behavior
+  ↓
+Learn Normality
+  ↓
+Detect Deviation
+  ↓
+Quantify Risk
+  ↓
+Explain Evidence
+  ↓
+Support Decisions
+```
+
+Mục tiêu cuối cùng không phải là xây một hệ thống **Quantum vì Quantum**.
+
+> **Sentinel xây Behavioral Fraud Intelligence trước; Quantum được sử dụng ở nơi nó có thể chứng minh giá trị.**
