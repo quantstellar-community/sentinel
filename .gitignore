@@ -1,2 +1,3 @@
-/docs
-/datasets
+.env
+
+.codex/
