@@ -107,7 +107,7 @@ Fair Benchmark
 Validated Intelligence
 ```
 
-Chi tiết kiến trúc được trình bày trong [`ARCHITECTURE.md`](ARCHITECTURE.md).
+Chi tiết kiến trúc được trình bày trong [`ARCHITECTURE.md`](https://github.com/quantstellar-community/sentinel/blob/main/docs/ARCHITECTURE.md).
 
 ---
 
@@ -179,7 +179,7 @@ Noise / Backend
 Runtime
 ```
 
-Chi tiết evaluation rules được quản lý trong [`RULES.md`](RULES.md).
+Chi tiết evaluation rules được quản lý trong [`RULES.md`](https://github.com/quantstellar-community/sentinel/blob/main/docs/RULES.md).
 
 ---
 
@@ -291,7 +291,7 @@ Vai trò chính:
 - **pytest** → testing.
 - **uv** → environment và dependency management.
 
-Chi tiết xem [`TECH_STACK.md`](TECH_STACK.md).
+Chi tiết xem [`TECH_STACK.md`](https://github.com/quantstellar-community/sentinel/blob/main/docs/TECH_STACK.md).
 
 ---
 
@@ -366,41 +366,7 @@ Cho đến khi reliability và governance được xác thực đầy đủ, Sen
 
 ---
 
-## 12. Current Status
-
-Sentinel hiện ở giai đoạn:
-
-```text
-Research Foundation
-        ↓
-Architecture / Documentation
-        ↓
-Environment Setup
-        ↓
-Core Implementation
-        ↓
-Classical Baseline
-        ↓
-Quantum Research
-        ↓
-Application Integration
-```
-
-Một capability chỉ được xem là validated khi có đủ evidence phù hợp về:
-
-```text
-Scientific Validity
-+
-Engineering Feasibility
-+
-Reproducibility
-+
-Practical Utility
-```
-
----
-
-## 13. Vision
+## 12. Vision
 
 Sentinel hướng tới một behavioral intelligence layer có khả năng:
 
@@ -420,6 +386,13 @@ Explain Evidence
 Support Decisions
 ```
 
-Mục tiêu cuối cùng không phải là xây một hệ thống **Quantum vì Quantum**.
+---
 
-> **Sentinel xây Behavioral Fraud Intelligence trước; Quantum được sử dụng ở nơi nó có thể chứng minh giá trị.**
+## License
+
+Copyright © 2026 Quantstellar Technologies.
+
+This project is proprietary software.
+All rights reserved.
+
+See [LICENSE](./LICENSE) for the full license terms.
