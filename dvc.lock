@@ -1,0 +1,106 @@
+schema: '2.0'
+stages:
+  extract:
+    cmd: .venv\Scripts\python.exe src/extraction/extract.py --data-dir data/raw 
+      --output data/raw/merged.parquet --split train
+    deps:
+    - path: data/raw/train_identity.csv
+      hash: md5
+      md5: 8487db5001c8bad139f3318d5d3db416
+      size: 26529680
+    - path: data/raw/train_transaction.csv
+      hash: md5
+      md5: 58b4038d8715f5e11007b826bef00ce7
+      size: 683351067
+    - path: src/extraction/extract.py
+      hash: md5
+      md5: e0d807e7892eae7ba73cf23968e480ef
+      size: 3107
+    params:
+      params.yaml:
+        extract.split_set: train
+    outs:
+    - path: data/raw/merged.parquet
+      hash: md5
+      md5: 0b58faecc5eba19c95dd182450da9391
+      size: 84148900
+  clean:
+    cmd: .venv\Scripts\python.exe src/cleaning/clean.py --input 
+      data/raw/merged.parquet --output data/cleaned/merged_cleaned.parquet
+    deps:
+    - path: data/raw/merged.parquet
+      hash: md5
+      md5: 0b58faecc5eba19c95dd182450da9391
+      size: 84148900
+    - path: src/cleaning/clean.py
+      hash: md5
+      md5: 3d0e13e53a1c4d68fb71814d39fe4467
+      size: 3448
+    outs:
+    - path: data/cleaned/merged_cleaned.parquet
+      hash: md5
+      md5: 85c6c2297f68c15d334e44f589815f27
+      size: 85661345
+  split:
+    cmd: .venv\Scripts\python.exe src/split/split.py --input 
+      data/cleaned/merged_cleaned.parquet --output 
+      data/manifests/split_manifest.parquet --train-frac 0.6 --val-frac 0.15 
+      --cal-frac 0.1 --test-frac 0.15
+    deps:
+    - path: data/cleaned/merged_cleaned.parquet
+      hash: md5
+      md5: 85c6c2297f68c15d334e44f589815f27
+      size: 85661345
+    - path: src/split/split.py
+      hash: md5
+      md5: 4283f6b862d44d9552c0a3e476708256
+      size: 4325
+    params:
+      params.yaml:
+        split.cal_frac: 0.1
+        split.test_frac: 0.15
+        split.train_frac: 0.6
+        split.val_frac: 0.15
+    outs:
+    - path: data/manifests/split_manifest.parquet
+      hash: md5
+      md5: 3327cb3f5f871e6cb960c6697fbb0df1
+      size: 5894333
+  build_features:
+    cmd: .venv\Scripts\python.exe src/feature_engineering/build_features.py 
+      --input data/cleaned/merged_cleaned.parquet --manifest 
+      data/manifests/split_manifest.parquet --output-dir data/views 
+      --artifacts-dir data/artifacts --n-components 8 --quantum-encoding-min 0.0
+      --quantum-encoding-max 3.14159265358979 --quantum-max-samples 3000 
+      --random-seed 42
+    deps:
+    - path: data/cleaned/merged_cleaned.parquet
+      hash: md5
+      md5: 85c6c2297f68c15d334e44f589815f27
+      size: 85661345
+    - path: data/manifests/split_manifest.parquet
+      hash: md5
+      md5: 3327cb3f5f871e6cb960c6697fbb0df1
+      size: 5894333
+    - path: src/feature_engineering/build_features.py
+      hash: md5
+      md5: b8e0eea970b75b04cdd1c0cd7e7121d2
+      size: 15092
+    params:
+      params.yaml:
+        build_features.n_components: 8
+        build_features.quantum_encoding_max: 3.14159265358979
+        build_features.quantum_encoding_min: 0.0
+        build_features.quantum_max_samples: 3000
+        build_features.random_seed: 42
+    outs:
+    - path: data/artifacts
+      hash: md5
+      md5: 0eb0ec59ef1072863be248dfa7f0e8df.dir
+      size: 38604
+      nfiles: 4
+    - path: data/views
+      hash: md5
+      md5: de8704586b8f6e9b72535cfbf35029ef.dir
+      size: 163760323
+      nfiles: 17

@@ -1,0 +1,89 @@
+﻿stages:
+
+  extract:
+    cmd: .venv\Scripts\python.exe src/extraction/extract.py
+      --data-dir data/raw
+      --output data/raw/merged.parquet
+      --split ${extract.split_set}
+    deps:
+      - src/extraction/extract.py
+      - data/raw/train_transaction.csv
+      - data/raw/train_identity.csv
+    params:
+      - extract.split_set
+    outs:
+      - data/raw/merged.parquet
+
+  clean:
+    cmd: .venv\Scripts\python.exe src/cleaning/clean.py
+      --input data/raw/merged.parquet
+      --output data/cleaned/merged_cleaned.parquet
+    deps:
+      - src/cleaning/clean.py
+      - data/raw/merged.parquet
+    outs:
+      - data/cleaned/merged_cleaned.parquet
+
+  split:
+    cmd: .venv\Scripts\python.exe src/split/split.py
+      --input data/cleaned/merged_cleaned.parquet
+      --output data/manifests/split_manifest.parquet
+      --train-frac ${split.train_frac}
+      --val-frac ${split.val_frac}
+      --cal-frac ${split.cal_frac}
+      --test-frac ${split.test_frac}
+    deps:
+      - src/split/split.py
+      - data/cleaned/merged_cleaned.parquet
+    params:
+      - split.train_frac
+      - split.val_frac
+      - split.cal_frac
+      - split.test_frac
+    outs:
+      - data/manifests/split_manifest.parquet
+
+  build_features:
+    cmd: .venv\Scripts\python.exe src/feature_engineering/build_features.py
+      --input data/cleaned/merged_cleaned.parquet
+      --manifest data/manifests/split_manifest.parquet
+      --output-dir data/views
+      --artifacts-dir data/artifacts
+      --n-components ${build_features.n_components}
+      --quantum-encoding-min ${build_features.quantum_encoding_min}
+      --quantum-encoding-max ${build_features.quantum_encoding_max}
+      --quantum-max-samples ${build_features.quantum_max_samples}
+      --random-seed ${build_features.random_seed}
+    deps:
+      - src/feature_engineering/build_features.py
+      - data/cleaned/merged_cleaned.parquet
+      - data/manifests/split_manifest.parquet
+    params:
+      - build_features.n_components
+      - build_features.quantum_encoding_min
+      - build_features.quantum_encoding_max
+      - build_features.quantum_max_samples
+      - build_features.random_seed
+    outs:
+      - data/views
+      - data/artifacts
+
+
+  eda:
+    cmd: .venv\Scripts\python.exe src/eda/eda_report.py
+      --cleaned data/cleaned/merged_cleaned.parquet
+      --manifest data/manifests/split_manifest.parquet
+      --views-dir data/views
+      --artifacts-dir data/artifacts
+      --output-dir data/eda
+      --n-components ${build_features.n_components}
+    deps:
+      - src/eda/eda_report.py
+      - data/cleaned/merged_cleaned.parquet
+      - data/manifests/split_manifest.parquet
+      - data/views
+      - data/artifacts
+    params:
+      - build_features.n_components
+    outs:
+      - data/eda

@@ -1,0 +1,27 @@
+﻿# params.yaml — Nguồn sự thật duy nhất cho TẤT CẢ tham số pipeline
+# Chỉnh sửa ở đây, sau đó chạy `dvc repro` để DVC tự detect stage nào cần rebuild.
+#
+# QUAN TRỌNG: random_seed ảnh hưởng đến PCA và quantum subsampling.
+# Nếu đổi seed -> kết quả classical_kernel và quantum_8q sẽ thay đổi.
+# Đổi seed phải thông báo cho toàn team vì ảnh hưởng benchmark.
+
+extract:
+  data_dir: data/raw
+  split_set: train
+
+clean:
+  missing_drop_threshold: 0.95
+  min_freq_categorical: 20
+
+split:
+  train_frac: 0.60
+  val_frac:   0.15
+  cal_frac:   0.10
+  test_frac:  0.15
+
+build_features:
+  n_components: 8
+  quantum_encoding_min: 0.0
+  quantum_encoding_max: 3.14159265358979
+  quantum_max_samples: 3000
+  random_seed: 42
