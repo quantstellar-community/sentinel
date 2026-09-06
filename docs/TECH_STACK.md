@@ -328,11 +328,12 @@ SciPy chỉ được sử dụng ở nơi có computational/statistical justific
 
 Có thể sử dụng cho:
 
-- Isolation Forest.
-- One-Class SVM.
+- One-Class SVM (classical baseline core V1).
 - Classical preprocessing.
 - Evaluation metrics.
 - Classical model baselines.
+
+Theo `SENTINEL_THESIS.md`, classical baseline core V1 gồm Logistic Regression, LightGBM và Classical OCSVM; XGBoost và Isolation Forest không nằm trong core.
 
 Sentinel không coi một algorithm là mặc định tốt nhất.
 
@@ -352,7 +353,7 @@ Problem
 
 Các library supervised ML bổ sung chỉ được thêm khi formulation của bài toán thực sự yêu cầu.
 
-Ví dụ một model như XGBoost chỉ nên được đưa vào khi:
+Ví dụ một model như LightGBM (supervised baseline core V1) chỉ nên được đưa vào khi:
 
 - Labelled formulation phù hợp.
 - Có research/product reason.

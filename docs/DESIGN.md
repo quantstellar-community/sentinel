@@ -910,7 +910,7 @@ Taipy không trực tiếp gọi:
 
 ```text
 Qiskit
-XGBoost
+LightGBM
 OCSVM
 Feature Engineering
 ```

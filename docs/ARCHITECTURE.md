@@ -401,12 +401,13 @@ Path:
 src/sentinel/models/classical/
 ```
 
-Các approaches có thể bao gồm:
+Classical baseline core V1 (theo `SENTINEL_THESIS.md`):
 
-- Isolation Forest.
-- One-Class SVM.
-- Classical kernel methods.
-- XGBoost hoặc supervised baseline khi bài toán/evaluation phù hợp.
+- Logistic Regression — linear supervised reference point.
+- LightGBM — strong classical supervised baseline (ưu tiên hơn XGBoost; không đưa cả hai vào core).
+- Classical OCSVM — classical counterpart trực tiếp cho Quantum Kernel OCSVM.
+
+XGBoost và Isolation Forest không nằm trong classical baseline core V1. Một classical kernel method (ví dụ RBF Kernel + OCSVM) có thể được dùng làm classical counterpart cho quantum kernel khi evaluation yêu cầu.
 
 Classical baseline phải có thể chạy độc lập với Quantum.
 
@@ -611,7 +612,7 @@ UI không được trực tiếp gọi:
 
 ```text
 Qiskit
-XGBoost
+LightGBM
 scikit-learn
 Feature Engineering
 Sentinel services

@@ -408,10 +408,11 @@ ClassicalResult
 
 Ví dụ model có thể là:
 
-- Isolation Forest.
-- One-Class SVM.
-- Classical kernel method.
-- XGBoost khi supervised formulation phù hợp.
+- Logistic Regression.
+- LightGBM.
+- Classical OCSVM.
+
+(XGBoost và Isolation Forest không nằm trong classical baseline core V1 — theo `SENTINEL_THESIS.md`.)
 
 ### 7.3. Quantum Result
 

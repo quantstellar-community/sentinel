@@ -319,13 +319,14 @@ Mục tiêu là xác định:
 
 Sentinel hỗ trợ anomaly detection bằng Classical và Quantum methods.
 
-Các baseline/approaches có thể bao gồm:
+Các baseline/approaches cho V1 (theo `SENTINEL_THESIS.md`):
 
-- Isolation Forest.
-- One-Class SVM.
-- Classical kernel methods.
-- Quantum Kernel.
+- Logistic Regression.
+- LightGBM.
+- Classical OCSVM.
 - Quantum Kernel + OCSVM.
+
+XGBoost và Isolation Forest không nằm trong classical baseline core V1.
 
 Việc lựa chọn model cuối cùng phải dựa trên benchmark thay vì giả định trước model nào tốt nhất.
 

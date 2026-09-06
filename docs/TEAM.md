@@ -145,14 +145,15 @@ Xây dựng behavioral/anomaly detection baseline và các phương pháp Classi
 - Feature ablation.
 - Benchmark với Quantum methods.
 
-### Các hướng có thể sử dụng
+### Các hướng sử dụng cho baseline core V1
 
-Tùy formulation và dataset:
+Theo `SENTINEL_THESIS.md`:
 
-- Isolation Forest.
-- One-Class SVM.
-- Classical kernel methods.
-- Các anomaly detection methods phù hợp khác.
+- Logistic Regression.
+- LightGBM.
+- Classical OCSVM.
+
+XGBoost và Isolation Forest không nằm trong classical baseline core V1.
 
 ### Nguyên tắc
 

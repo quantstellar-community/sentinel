@@ -340,12 +340,13 @@ Validation
 Baseline Result
 ```
 
-Baseline có thể bao gồm:
+Classical baseline core V1 (theo `SENTINEL_THESIS.md`):
 
-- Isolation Forest.
-- One-Class SVM.
-- Classical kernel methods.
-- Method khác nếu problem formulation yêu cầu.
+- Logistic Regression.
+- LightGBM.
+- Classical OCSVM.
+
+XGBoost và Isolation Forest không nằm trong classical baseline core V1. Classical kernel method (RBF Kernel + OCSVM) có thể được dùng làm classical counterpart cho Quantum Kernel + OCSVM.
 
 Baseline phải đủ mạnh và hợp lý để comparison có ý nghĩa.
 

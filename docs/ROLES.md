@@ -217,12 +217,13 @@ Xây dựng behavioral/anomaly detection baseline và đóng vai trò chuẩn so
 
 ### Classical baseline
 
-Có thể nghiên cứu:
+Classical baseline core V1 (theo `SENTINEL_THESIS.md`):
 
-- Isolation Forest.
-- One-Class SVM.
-- Classical kernel methods.
-- Các anomaly detection methods phù hợp với formulation.
+- Logistic Regression.
+- LightGBM.
+- Classical OCSVM.
+
+XGBoost và Isolation Forest không nằm trong classical baseline core V1. Classical kernel method (RBF Kernel + OCSVM) có thể được dùng làm classical counterpart cho Quantum Kernel + OCSVM.
 
 Không algorithm nào được mặc định là final method.
 
