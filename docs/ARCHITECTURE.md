@@ -1115,53 +1115,22 @@ Nhưng đây là **future architecture option**, không phải V1 requirement.
 
 ## 26. Architectural Decisions
 
-### ADR-01 — Modular Monolith
+Các Architecture Decision Records (ADR) chi tiết nằm tại [`docs/ADR/`](ADR/README.md) — nguồn chính thức duy nhất (RULE-59). Phần này chỉ tóm tắt và link:
 
-**Quyết định:** Sentinel V1 sử dụng Modular Monolith.
-
-**Lý do:** Giữ development/research velocity cao, giảm infrastructure complexity và vẫn duy trì module boundaries rõ ràng.
-
-### ADR-02 — FastAPI as Product API
-
-**Quyết định:** FastAPI là integration boundary của Sentinel.
-
-**Lý do:** Giữ UI độc lập với Core và tạo API contract rõ ràng cho các clients khác.
-
-### ADR-03 — Taipy as Reference Client
-
-**Quyết định:** Taipy là reference UI client V1.
-
-**Lý do:** Phù hợp với Python-centric research/product prototype và cho phép xây investigation interface nhanh mà không đưa UI logic vào Core.
-
-### ADR-04 — Research Outside Core
-
-**Quyết định:** Research notebooks và experiments nằm ngoài `src/sentinel/`.
-
-**Lý do:** Bảo vệ production core khỏi exploratory code và duy trì reproducibility/maintainability.
-
-### ADR-05 — Quantum Inside Core Boundary
-
-**Quyết định:** Quantum là module computation trong Sentinel Core, không phải microservice riêng ở V1.
-
-**Lý do:** Chưa có workload justification cho quantum service độc lập; giữ computation, model evaluation và application orchestration gần nhau.
-
-### ADR-06 — Classical Independent from Quantum
-
-**Quyết định:** Classical pipeline phải hoạt động độc lập với Quantum.
-
-**Lý do:** Classical là baseline bắt buộc và Sentinel phải còn functional khi Quantum unavailable.
-
-### ADR-07 — UI Through API
-
-**Quyết định:** Taipy chỉ giao tiếp với Sentinel Core thông qua API.
-
-**Lý do:** Bảo vệ separation of concerns và cho phép thay thế client trong tương lai.
-
-### ADR-08 — No Premature Infrastructure
-
-**Quyết định:** Không thêm microservices, Kubernetes, Kafka, Airflow/Prefect hoặc distributed infrastructure vào V1 nếu chưa có requirement.
-
-**Lý do:** Tránh over-engineering và giữ architecture aligned với actual workload.
+| ADR | Tiêu đề | Trạng thái |
+|---|---|---|
+| [ADR-001](ADR/ADR-001-modular-monolith.md) | Modular Monolith | Accepted |
+| [ADR-002](ADR/ADR-002-fastapi-product-api.md) | FastAPI as Product API | Accepted |
+| [ADR-003](ADR/ADR-003-taipy-reference-client.md) | Taipy as Reference Client | Accepted |
+| [ADR-004](ADR/ADR-004-research-outside-core.md) | Research Outside Core | Accepted |
+| [ADR-005](ADR/ADR-005-quantum-inside-core.md) | Quantum Inside Core Boundary | Accepted |
+| [ADR-006](ADR/ADR-006-classical-independent.md) | Classical Independent from Quantum | Accepted |
+| [ADR-007](ADR/ADR-007-ui-through-api.md) | UI Through API | Accepted |
+| [ADR-008](ADR/ADR-008-no-premature-infrastructure.md) | No Premature Infrastructure | Accepted |
+| [ADR-009](ADR/ADR-009-hatchling-src-layout.md) | Hatchling + src-layout Packaging | Accepted |
+| [ADR-010](ADR/ADR-010-data-layer-contract.md) | Data Layer Contract (SplitData + config) | Accepted |
+| [ADR-011](ADR/ADR-011-temporal-split.md) | Temporal Split 70/15/15 | Accepted |
+| [ADR-012](ADR/ADR-012-kagglehub-data-fetch.md) | Kagglehub Data Fetch | Accepted |
 
 ---
 
