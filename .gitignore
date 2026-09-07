@@ -3,7 +3,8 @@
 .codex/
 .venv/
 venv/
-/data/
+/data/*
+!/data/README.md
 
 __pycache__/
 *.py[cod]
