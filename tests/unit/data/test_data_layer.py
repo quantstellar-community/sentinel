@@ -7,7 +7,10 @@ import pandas as pd
 import pytest
 
 from sentinel.data.ingestion.creditcard import load_creditcard
-from sentinel.data.preprocessing.features import build_features, auto_detect_feature_columns
+from sentinel.data.preprocessing.features import (
+    auto_detect_feature_columns,
+    build_features,
+)
 from sentinel.data.preprocessing.split import temporal_split
 from sentinel.data.validation.creditcard import DataValidationError, validate_creditcard
 
