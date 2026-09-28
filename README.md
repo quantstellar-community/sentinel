@@ -4,8 +4,6 @@
 
 Sentinel is a behavioral fraud intelligence platform. Instead of classifying transactions as fraudulent or not in isolation, Sentinel learns what normal behavior looks like, measures meaningful deviations, and translates them into explainable anomaly and risk signals.
 
-> **Status:** Early research & pre-implementation foundation. Production pipelines, public API, and deployed quantum circuits are not yet considered complete.
-
 ---
 
 ## Overview
